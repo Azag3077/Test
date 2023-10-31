@@ -1,0 +1,182 @@
+{
+    "clothes": {
+        "tracksuit.jpg": {
+            "price": "",
+            "gender": ""
+        },
+        "Sport vest.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Sports top.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Red sports vest.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Red and yellow sports top.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Navy Blue long sleeve sports wear.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "sport T-Shirt.jpg":{
+            "price":"",
+            "gender":""
+        },
+        "red long sleeve sport wear.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Navy Blue long sleeve sport wear.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Longsleeve sports vest.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Black vest.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Black sleeve less sport top.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "Black sports vest.jpg": {
+            "price":"",
+            "gender":""
+        },
+        "addidas hoodie.jpg": {
+            "price":"",
+            "gender":""
+        }
+    },
+  "shoes": {
+    "nmd.jpg": {
+        "size":""
+    },
+    "nmd 2.jpg": {
+        "size":""
+    },
+    "kids trainers.jpg": {
+        "size":""
+    },
+    "kids trainers 6.jpg": {
+        "size":""
+    },
+    "kids trainers 5.jpg": {
+        "size":""
+    },
+    "kids trainers 4.jpg": {
+        "size":""
+    },
+    "kids trainers 3.jpg": {
+        "size":""
+    },
+    "kids trainers 2.jpg": {
+        "size":""
+    },
+    "female trainers.jpg": {
+        "size":""
+    },
+    "female trainers 4.jpg": {
+        "size":""
+    },
+    "female trainers 3.jpg": {
+        "size":""
+    },
+    "female trainers 2.jpg": {
+        "size":""
+    },
+    "air max.jpg": {
+        "size":""
+    },
+    "air max 95.jpg": {
+        "size":""
+    },
+    "air jordans.jpg": {
+        "size":""
+    },
+    "air jordans 2.jpg": {
+        "size":""
+    },
+    "addidas trainers.jpg": {
+        "size":""
+    },
+    "addidas nmd.jpg": {
+        "size":""
+    },
+    "addidas female tubular.jpg": {
+        "size":""
+    },
+    "addidas 2.jpg": {
+        "size":""
+    },
+    "addidas female swift run.jpg": {
+        "size":""
+    },
+    "air force second.jpg": {
+        "size":""
+    }
+  },
+  "bottles": {
+    "Real Madrid bottle.jpg": {
+        "color":""
+    },
+    "Man U bottle.jpg": {
+        "color":""
+    },
+    "chelsea bottle.jpg": {
+        "color":""
+    },
+    "addidas red bottle.jpg": {
+        "color":""
+    },
+    "addidas bottle.jpg": {
+        "color":""
+    }
+  },
+ "wristwatch": {
+   "men watch.jpg":{
+    "brand":""
+   },
+   "men watch 1.jpg": {
+    "brand":""
+   },
+   "men watch 2.jpg": {
+    "brand":""
+   },
+   "men watch 3.jpg": {
+    "brand":""
+   },
+   "men watch 4.jpg": {
+    "brand":""
+   },
+   "men watch 5.jpg": {
+    "brand":""
+   }
+  },
+  "caps": {
+    "under armour white.jpg": {
+        "color":""
+    },
+    "under armour cap.jpg": {
+        "color":""
+    },
+    "nike face cap.jpg": {
+        "color":""
+    },
+    "grey under armour cap.jpg": {
+        "color":""
+    },
+    "addidas face cap.jpg": {
+        "color":""
+    }
+  }
+}
