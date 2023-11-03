@@ -1,42 +1,87 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce/components/cart_item.dart';
-import 'package:ecommerce/models/cart.dart';
-import 'package:ecommerce/models/shoe.dart';
+import 'package:ecommerce/controller.dart';
+import 'package:ecommerce/providers.dart';
+import 'package:ecommerce/widgets/buttons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends ConsumerWidget {
   const CartPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<Cart>(
-      builder: (context, value, child) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // heading
-            const Text(
-              'My Cart',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favorites = ref.watch(cartsStateProvider).reversed;
+
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        titleTextStyle: Theme.of(context).textTheme.titleLarge,
+        backgroundColor: Colors.transparent,
+        title: const Text(
+          'My Carts',
+          style: TextStyle(
+            color: Colors.blueGrey,
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+          ),
+        ),
+        centerTitle: true,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.dark,
+        ),
+      ),
+      body: favorites.isNotEmpty ?
+      Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: favorites.length,
+              itemBuilder: (BuildContext context, int index) {
+                final product = favorites.elementAt(index);
+                return CartCard(
+                  product: product,
+                  onPressed: () => controller.onProductSelect(context, ref, product),
+                  onAddCart: () => controller.addToCart(context, ref, product),
+                  onRemoveCart: () => controller.removeFromCart(context, ref, product),
+                );
+              },
             ),
-
-            const SizedBox(height: 20),
-
-            Expanded(
-                child: ListView.builder(
-                    itemCount: value.getuserCart().length,
-                    itemBuilder: (context, index) {
-                      // get individual shoe
-                      Shoe individualShoe = value.getuserCart()[index];
-
-                      // return the cart item
-                      return CartItem(shoe: individualShoe);
-                    },
-                    ),
-                    ),
-          ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 12.0),
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                padding: const MaterialStatePropertyAll(
+                  EdgeInsets.symmetric(vertical: 12.0)
+                ),
+                backgroundColor: const MaterialStatePropertyAll(
+                  Color.fromRGBO(22, 37, 51, 1)
+                ),
+                shape: MaterialStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)
+                  )
+                )
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('Proceed to checkout'),
+                  SizedBox(width: 15.0),
+                  Icon(Icons.shopping_cart_checkout, size: 20.0,)
+                ],
+              ),
+            ),
+          ),
+        ],
+      ) :
+      const Center(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text('You do not have any favourite item.'),
         ),
       ),
     );

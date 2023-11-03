@@ -5,12 +5,12 @@ import 'package:shimmer/shimmer.dart';
 class ImageLoader extends StatelessWidget {
   const ImageLoader({
     Key? key,
-    required this.imageUrl,
+    required this.imagePath,
     this.height,
     this.width,
     this.decoration,
   }) : super(key: key);
-  final String imageUrl;
+  final String imagePath;
   final double? height;
   final double? width;
   final Decoration? decoration;
@@ -19,11 +19,11 @@ class ImageLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: decoration ?? BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(20)
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(20)
       ),
       child: CachedNetworkImage(
-        imageUrl: imageUrl,
+        imageUrl: imagePath,
         height: height,
         width: width,
         placeholder: (context, url) => Shimmer.fromColors(
@@ -39,8 +39,7 @@ class ImageLoader extends StatelessWidget {
             ),
           ),
         ),
-        errorWidget: (context, url, error) => Image.asset('images/$imageUrl'),
-        // errorWidget: (context, url, error) => const Icon(Icons.error),
+        errorWidget: (context, url, error) => Image.asset(imagePath),
       ),
     );
   }
@@ -82,62 +81,78 @@ class DataLoader extends StatelessWidget {
   }
 }
 
-class LoadingPlaceHolder extends StatelessWidget {
-  const LoadingPlaceHolder({Key? key}) : super(key: key);
+class ProductLoadingCard extends StatefulWidget {
+  const ProductLoadingCard({Key? key}) : super(key: key);
+
+  @override
+  State<ProductLoadingCard> createState() => _ProductLoadingCardState();
+}
+
+class _ProductLoadingCardState extends State<ProductLoadingCard> {
+  final PageController pageLoadingController = PageController(initialPage: 1, viewportFraction: .6);
+
+  @override
+  void dispose() {
+    pageLoadingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return PageView.builder(
+      itemCount: 3,
       physics: const NeverScrollableScrollPhysics(),
-      child: Column(
-        children: List.generate(6, (index) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-          child: SizedBox(
-            height: 130,
-            child: Row(
+      controller: pageLoadingController,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (_, int index) => Padding(
+        padding: const EdgeInsets.only(bottom: 10.0, right: 30.0),
+        child: Card(
+          margin: EdgeInsets.zero,
+          elevation: 3,
+          color: Colors.grey.shade50,
+          clipBehavior: Clip.hardEdge,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20)
+          ),
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 DataLoader(
-                  height: 130,
-                  width: MediaQuery.of(context).size.width/2,
+                  height: 180,
+                  width: double.infinity,
                 ),
-                const SizedBox(width: 8.0),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const DataLoader(
-                        height: 20.0,
-                        margin: EdgeInsets.only(top: 5.0),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 20.0),
+                        child: DataLoader(
+                          height: 25,
+                        ),
                       ),
-                      const DataLoader(
-                          height: 10.0,
-                          margin: EdgeInsets.only(right: 30.0, top: 5.0)
-                      ),
-                      const DataLoader(
-                          height: 10.0,
-                          margin: EdgeInsets.only(right: 45.0, top: 5.0)
-                      ),
-                      const Spacer(),
-                      Row(
-                        children: const <Widget>[
-                          Expanded(
-                            child: DataLoader(
-                              height: 30,
-                              margin: EdgeInsets.only(bottom: 5.0),
-                            ),
-                          ),
-                          // DataLoader(),
-                        ],
-                      )
-                    ],
-                  ),
-                )
+                    ),
+                    DataLoader(
+                      height: 30,
+                      width: 30,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 6.0),
+                Spacer(),
+                DataLoader(
+                  height: 32,
+                  width: double.infinity,
+                ),
+                SizedBox(height: 12.0),
               ],
             ),
           ),
-        )),
-      ),
+        ),
+      )
     );
   }
 }

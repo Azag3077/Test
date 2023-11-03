@@ -1,89 +1,131 @@
+import 'dart:math';
+import 'package:ecommerce/controller.dart';
+import 'package:ecommerce/providers.dart';
 import 'package:ecommerce/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'models.dart';
-
-class FavPage extends StatelessWidget {
+class FavPage extends ConsumerWidget {
   const FavPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-
-    final List<String> images = [
-      "addidas female swift run.jpg",
-      "addidas female tubular.jpg",
-      "addidas hoodie.jpg",
-      "addidas nmd.jpg",
-      "addidas trainers.jpg",
-      "addidas 2.jpg",
-      "air force second.jpg",
-      "air jordans.jpg",
-      "air jordans 2.jpg",
-      "air max.jpg",
-      "air max 95.jpg",
-      "Amazing.jpg",
-      "Back sports vest.jpg",
-      "background.jpg",
-      "Black vest.jpg",
-      "female trainers.jpg",
-      "female trainers 2.jpg",
-      "female trainers 3.jpg",
-      "female trainers 4.jpg",
-      "good.jpg",
-      "Grey sleeve less sports top.jpg",
-      "kids trainer 2.jpg",
-      "kids trainers.jpg",
-      "kids trainers 3.jpg",
-      "kids trainers 4.jpg",
-      "kids trainers 5.jpg",
-      "kids trainers 6.jpg",
-      "koi.jpg",
-      "Longsleeve sports vest.jpg",
-      "Nevy Blue long sleeve sports wear.jpg",
-      "new.jpg",
-      "nice.jpg",
-      "nmd.jpg",
-      "nmd 2.jpg",
-      "No nO.jpg",
-      "Red and yellow sports top.jpg",
-      "Red sports vest.jpg",
-      "sports good.jpg",
-      "Sports top.jpg",
-      "Sports vest.jpg",
-      "tracksuit.jpg",
-    ];
-    final data = images.map((image) {
-      final index = images.indexOf(image);
-      return Product(
-        id: "id_$index",
-        name: "name $index",
-        price: "price",
-        color: "color",
-        gender: "gender",
-        category: "category",
-        images: [image, image, image],
-      );
-    }).toList();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favorites = ref.watch(favoritesStateProvider).reversed;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(22, 37, 51, 1),
-        title: const Text('My Favourites'),
+        elevation: 0.0,
+        titleTextStyle: Theme.of(context).textTheme.titleLarge,
+        backgroundColor: Colors.transparent,
+        title: const Text(
+          'My Favourites',
+          style: TextStyle(
+            color: Colors.blueGrey,
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+          ),
+        ),
+        centerTitle: true,
         systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.dark,
         ),
       ),
-      body: ListView.builder(
-        itemCount: data.length,
+      body: favorites.isNotEmpty ?
+        ListView.builder(
+        itemCount: favorites.length,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: OrderCard(
-              order: data.elementAt(index),
-            )
+          final product = favorites.elementAt(index);
+          return FavCard(
+            product: product,
+            onPressed: () => controller.onProductSelect(context, ref, product),
+            onDislike: () => controller.onFavourite(context, ref, product),
           );
         },
+      ) :
+        const Center(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text('You do not have any favourite item.'),
+          ),
+        ),
+    );
+  }
+}
+
+class Azag extends ConsumerStatefulWidget {
+  const Azag({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<Azag> createState() => _AzagState();
+}
+
+class _AzagState extends ConsumerState<Azag> {
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
+  List<String> items = List.generate(10, (index) => 'List item $index');
+
+
+  @override
+  void initState() {
+    items = List.generate(10, (index) => 'List item $index');
+    // items = ref.watch(favoritesStateProvider).map((e) => e.name).toList();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Animated List Demo'),
       ),
+      body: AnimatedList(
+        key: _listKey,
+        initialItemCount: items.length,
+        itemBuilder: (context, index, animation) {
+          return buildItem(items[index], animation, index);
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addItem();
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget buildItem(String item, Animation<double> animation, int index) {
+    return SizeTransition(
+      sizeFactor: animation,
+      child: Card(
+        child: ListTile(
+          title: Text(item),
+          trailing: IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              removeItem(index);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void addItem() {
+    int random = Random().nextInt(100);
+    final newIndex = items.length;
+    items.insert(newIndex, 'Item $random');
+    _listKey.currentState?.insertItem(newIndex);
+  }
+
+  void removeItem(int index) {
+    final removedItem = items.removeAt(index);
+    _listKey.currentState?.removeItem(
+      index,
+          (context, animation) {
+        return buildItem(removedItem, animation, index);
+      },
     );
   }
 }
