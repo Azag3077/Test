@@ -1,4 +1,5 @@
 import 'package:ecommerce/pages/models.dart';
+import 'package:ecommerce/widgets/paints.dart';
 import 'package:ecommerce/widgets/place_holders.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -165,7 +166,86 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
             ),
-            MaterialButton(
+            Positioned(
+              top: -2,
+              right: -2,
+              child: MaterialButton(
+                color: Colors.blueGrey.shade300.withOpacity(.4),
+                padding: const EdgeInsets.all(10),
+                minWidth: 0.0,
+                elevation: 0.0,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30.0)
+                  )
+                ),
+                onPressed: onLike,
+                child: isFavourite ? const Icon(CupertinoIcons.heart_fill) : const Icon(CupertinoIcons.heart),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProductCard2 extends StatelessWidget {
+  const ProductCard2({
+    Key? key,
+    required this.product,
+    required this.isFavourite,
+    this.onLike,
+    this.onCard,
+  }) : super(key: key);
+  final Product product;
+  final bool isFavourite;
+  final VoidCallback? onLike;
+  final VoidCallback? onCard;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      onPressed: onCard,
+      minWidth: 0,
+      color: Colors.white,
+      elevation: 5,
+      padding: EdgeInsets.zero,
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0)
+      ),
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Flexible(
+                  child: Center(
+                    child: ImageLoader(
+                      imagePath: product.images.first,
+                    ),
+                  ),
+                ),
+                Text(product.name),
+                Text(
+                  product.price,
+                  style: const TextStyle(
+                    color: Colors.blueGrey,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: -2,
+            right: -2,
+            child: MaterialButton(
               color: Colors.blueGrey.shade300.withOpacity(.4),
               padding: const EdgeInsets.all(10),
               minWidth: 0.0,
@@ -177,9 +257,9 @@ class ProductCard extends StatelessWidget {
               ),
               onPressed: onLike,
               child: isFavourite ? const Icon(CupertinoIcons.heart_fill) : const Icon(CupertinoIcons.heart),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -497,7 +577,7 @@ class CartCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0)
         ),
         child: SizedBox(
-          height: 180,
+          height: 150,
           child: Row(
             children: <Widget>[
               Expanded(
@@ -632,6 +712,60 @@ class CartCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class FilterButton extends StatelessWidget {
+  const FilterButton({
+    Key? key,
+    required this.text,
+    required this.isSelected,
+    this.onSelected,
+  }) : super(key: key);
+  final String text;
+  final bool isSelected;
+  final VoidCallback? onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.topRight,
+      children: <Widget>[
+        MaterialButton(
+          onPressed: onSelected,
+          padding: EdgeInsets.zero,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          minWidth: 80.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6.0),
+            side: const BorderSide(
+              width: 1.5,
+              color: Colors.blueGrey
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.blueGrey.shade700
+              ),
+            ),
+          ),
+        ),
+        if (isSelected) CustomPaint(
+          painter: ButtonTrianglePaint(),
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(0, 1.0, 2.0, 0),
+            child: Icon(
+              Icons.check,
+              size: 10.0,
+              color: Colors.white,
+            ),
+          ),
+        )
+      ],
     );
   }
 }

@@ -22,25 +22,30 @@ class ImageLoader extends StatelessWidget {
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(20)
       ),
-      child: CachedNetworkImage(
-        imageUrl: imagePath,
-        height: height,
+      child: Image.asset(
+        imagePath,
         width: width,
-        placeholder: (context, url) => Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
-          enabled: true,
-          child: SizedBox.expand(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-        errorWidget: (context, url, error) => Image.asset(imagePath),
-      ),
+        height: height,
+      )
+      // child: CachedNetworkImage(
+      //   imageUrl: imagePath,
+      //   height: height,
+      //   width: width,
+      //   placeholder: (context, url) => Shimmer.fromColors(
+      //     baseColor: Colors.grey.shade300,
+      //     highlightColor: Colors.grey.shade100,
+      //     enabled: true,
+      //     child: SizedBox.expand(
+      //       child: Container(
+      //         decoration: BoxDecoration(
+      //           borderRadius: BorderRadius.circular(12.0),
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      //   errorWidget: (context, url, error) => Image.asset(imagePath),
+      // ),
     );
   }
 }
@@ -153,6 +158,59 @@ class _ProductLoadingCardState extends State<ProductLoadingCard> {
           ),
         ),
       )
+    );
+  }
+}
+
+class ProductLoadingCard2 extends StatelessWidget {
+  const ProductLoadingCard2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+        itemCount: 10,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(10),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Number of columns
+          crossAxisSpacing: 16.0, // Spacing between columns
+          mainAxisSpacing: 16.0, // Spacing between rows
+          childAspectRatio: .8
+        ),
+        itemBuilder: (_, int index) {
+          return Card(
+            elevation: .2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: DataLoader(
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: DataLoader(
+                          height: 25.0,
+                        ),
+                      ),
+                      SizedBox(width: 10.0),
+                      DataLoader(
+                        width: 30,
+                        height: 30,
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        }
     );
   }
 }

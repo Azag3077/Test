@@ -1,5 +1,6 @@
 import 'package:ecommerce/pages/description_page.dart';
 import 'package:ecommerce/pages/models.dart';
+import 'package:ecommerce/pages/see_all_page.dart';
 import 'package:ecommerce/providers.dart';
 import 'package:ecommerce/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -36,10 +37,8 @@ class Controller {
     final SharedPreferences prefs = ref.watch(prefsFutureProvider).value!;
     final cartIds = (prefs.get('cartIds') as List<String>?)??[];
 
-    print(cartIds);
-
     final int index = cartIds.map((e) => e.split('//').first).toList().indexOf(product.id);
-    String count = '0';
+    String count = '1';
 
     if (index != -1) {
       count = '${((int.tryParse(cartIds[index].split('//').last)??0) + 1)}';
@@ -51,11 +50,7 @@ class Controller {
       prefs.setStringList('cartIds', cartIds);
     }
 
-
-    print(cartIds);
-    // prefs.setStringList('cartIds', []);
     ref.read(cartsStateProvider.notifier).update((state) => [...carts]);
-    // ref.read(cartsStateProvider.notifier).update((state) => [...[]]);
   }
 
   void removeFromCart(BuildContext context, WidgetRef ref, Product product, [bool? skip]) {
@@ -72,6 +67,8 @@ class Controller {
         onRemove: () {
           removeFromCart(context, ref, product, true);
           carts.remove(carts[index]);
+          cartIds.removeWhere((element) => element.split('//').first == product.id);
+          prefs.setStringList('cartIds', cartIds);
           ref.read(cartsStateProvider.notifier).update((state) => [...carts]);
         }
       );
@@ -93,14 +90,43 @@ class Controller {
     );
   }
 
-  void _showRemoveFromCartBottomSheet(BuildContext context) {
+  void onSeeALl(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const SeeALlPage())
+    );
+  }
+
+  void onSortIcon(BuildContext context, WidgetRef ref) {
+    _showSortBottomSheetDialog(
+      context, ref.watch(genderStateProvider),
+      onGenderSelection: (String value) {
+        ref.watch(genderStateProvider.notifier).update((state) => value);
+      },
+        onSizeSelection: (String value) {
+        ref.watch(sizeStateProvider.notifier).update((state) => value);
+      }
+    );
+  }
+
+  void _showSortBottomSheetDialog(
+      BuildContext context,
+      String gender,
+      {required ValueChanged<String> onGenderSelection,
+        required ValueChanged<String> onSizeSelection}) {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) => BottomSheet(
-        onClosing: () {},
-        builder: (BuildContext context) => Container(
-          color: Colors.red,
-        ))
+      clipBehavior: Clip.hardEdge,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30.0)
+        )
+      ),
+      builder: (BuildContext context) => SortModalBottomSheetDialog(
+        gender: gender,
+        onGenderSelection: onGenderSelection,
+        onSizeSelection: onSizeSelection
+      )
     );
   }
 }

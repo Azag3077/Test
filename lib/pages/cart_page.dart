@@ -12,6 +12,7 @@ class CartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favorites = ref.watch(cartsStateProvider).reversed;
+    // final favorites = [];
 
     return Scaffold(
       appBar: AppBar(

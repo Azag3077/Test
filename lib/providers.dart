@@ -798,8 +798,13 @@ final favoritesStateProvider = StateProvider<List<Product>>((ref) {
 final cartsStateProvider = StateProvider<List<Product>>((ref) {
   final products = ref.watch(productsStreamProvider).value??[];
   final carts = ref.watch(prefsFutureProvider).value?.getStringList('cartIds')??[];
-  print('Azag got here in provider $carts');
   return carts.map((id) => products
     .where((p) => p.id == id.split('//').first).first
       .copyWith(count: id.split('//').last)).toList();
 });
+
+final genders = ['All', 'Men', 'Women', 'Kid', 'Adult'];
+final sizes = ['Extra large', 'Large', 'Medium', 'Small', 'Extra small'];
+
+final genderStateProvider = StateProvider<String>((ref) => genders.first);
+final sizeStateProvider = StateProvider<String>((ref) => sizes.first);

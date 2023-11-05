@@ -118,7 +118,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
 
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => controller.onSeeALl(context),
                     style: const ButtonStyle(
                       foregroundColor: MaterialStatePropertyAll(
                         Color.fromRGBO(22, 37, 51, 1)
