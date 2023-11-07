@@ -45,36 +45,30 @@ class RemoveFromCartDialog extends StatelessWidget {
 class SortModalBottomSheetDialog extends ConsumerWidget {
   const SortModalBottomSheetDialog({
     Key? key,
-    required this.gender,
+    // required this.gender,
     this.onGenderSelection,
     this.onSizeSelection,
+    this.onFilter,
   }) : super(key: key);
-  final String gender;
+  // final String gender;
   final ValueChanged<String>? onGenderSelection;
   final ValueChanged<String>? onSizeSelection;
+  final Function(String, String)? onFilter;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final gender = StateProvider.autoDispose<String>((ref) => ref.watch(genderStateProvider));
+    final size = StateProvider.autoDispose<String>((ref) => ref.watch(sizeStateProvider));
     return SizedBox(
       height: MediaQuery.sizeOf(context).height * .8,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: <Widget>[
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      height: 6,
-                      width: 50,
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade400,
-                        borderRadius: BorderRadius.circular(12)
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
                     const Text(
                       'Filter',
                       style: TextStyle(
@@ -100,7 +94,11 @@ class SortModalBottomSheetDialog extends ConsumerWidget {
                       runSpacing: 20,
                       children: genders.map((g) => FilterButton(
                         text: g,
-                        isSelected: g == ref.watch(genderStateProvider),
+                        isSelected: g == ref.watch(gender),
+                        // onSelected: () {
+                        //   print(g);
+                        //   ref.read(gender.notifier).update((state) => g);
+                        // },
                         onSelected: () => onGenderSelection?.call(g),
                       )).toList(),
                     ),
@@ -129,13 +127,22 @@ class SortModalBottomSheetDialog extends ConsumerWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                onFilter?.call(
+                  ref.watch(gender),
+                  ref.watch(size),
+                );
+                Navigator.of(context).pop();
+              },
               style: ButtonStyle(
                 padding: const MaterialStatePropertyAll(
                   EdgeInsets.all(13)
                 ),
                 backgroundColor: const MaterialStatePropertyAll(
                   Color.fromRGBO(22, 37, 51, 1)
+                ),
+                foregroundColor: const MaterialStatePropertyAll(
+                  Colors.white
                 ),
                 shape: MaterialStatePropertyAll(
                   RoundedRectangleBorder(
@@ -146,7 +153,7 @@ class SortModalBottomSheetDialog extends ConsumerWidget {
               child: const SizedBox(
                 width: double.infinity,
                 child: Center(
-                  child: Text('Filter products')
+                  child: Text('Apply filter')
                 )
               ),
             )

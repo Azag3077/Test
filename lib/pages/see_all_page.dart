@@ -57,7 +57,7 @@ class SeeALlPage extends ConsumerWidget {
             ),
 
             Expanded(
-              child: ref.watch(productsStreamProvider).when(
+              child: ref.watch(seeAllStreamProvider).when(
                 data: (data) => GridView.builder(
                   itemCount: data.length,
                   padding: const EdgeInsets.all(10),

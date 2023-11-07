@@ -779,6 +779,18 @@ final productsStreamProvider = StreamProvider<List<Product>>((ref) async* {
   yield products.where((product) => category == categories.first || product.category == category).toList();
 });
 
+final seeAllStreamProvider = StreamProvider<List<Product>>((ref) async* {
+  final products = ref.watch(productsStreamProvider).value??[];
+  final gender = ref.watch(genderStateProvider);
+  final size = ref.watch(sizeStateProvider);
+  yield products.where((product) {
+    return (
+      gender == genders.first || product.gender == gender) && (
+      size == sizes.first || product.size == size
+    );
+  }).toList();
+});
+
 final categoriesStateProvider = StateProvider<List<String>>((ref) {
   return ['All products', ...?ref.watch(_productsStreamProvider).value?.map((e) => e.category).toSet()];
 });
@@ -804,7 +816,7 @@ final cartsStateProvider = StateProvider<List<Product>>((ref) {
 });
 
 final genders = ['All', 'Men', 'Women', 'Kid', 'Adult'];
-final sizes = ['Extra large', 'Large', 'Medium', 'Small', 'Extra small'];
+final sizes = ['All', 'Extra large', 'Large', 'Medium', 'Small', 'Extra small'];
 
 final genderStateProvider = StateProvider<String>((ref) => genders.first);
 final sizeStateProvider = StateProvider<String>((ref) => sizes.first);

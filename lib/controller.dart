@@ -1,5 +1,7 @@
 import 'package:ecommerce/pages/description_page.dart';
+import 'package:ecommerce/pages/login_page.dart';
 import 'package:ecommerce/pages/models.dart';
+import 'package:ecommerce/pages/nav_page.dart';
 import 'package:ecommerce/pages/see_all_page.dart';
 import 'package:ecommerce/providers.dart';
 import 'package:ecommerce/widgets/dialogs.dart';
@@ -8,8 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Controller {
-  bool isLiked =
-      true; // Initialize as false, indicating the product is not liked initially
   void onProductSelect(BuildContext context, WidgetRef ref, Product product) {
     ref.read(selectedProductStateProvider.notifier).update((state) => product);
     Navigator.of(context).push(MaterialPageRoute(
@@ -21,11 +21,14 @@ class Controller {
     final favourites = ref.watch(favoritesStateProvider);
     final SharedPreferences prefs = ref.watch(prefsFutureProvider).value!;
     final favouritesId = prefs.get('favoriteIds') as List<String>?;
+    late bool isLiked; // Initialize as false, indicating the product is not liked initially
 
     if (favourites.map((e) => e.id).contains(product.id)) {
+      isLiked = false;
       favourites.remove(product);
       favouritesId?.remove(product.id);
     } else {
+      isLiked = true;
       favourites.add(product);
       favouritesId?.add(product.id);
     }
@@ -81,9 +84,7 @@ class Controller {
           'Product added to cart!',
           style: TextStyle(color: Colors.white, fontSize: 16.0),
         ),
-        backgroundColor: isLiked
-            ? Colors.green
-            : Colors.red, // Change background color based on like/dislike
+        backgroundColor: Colors.green,
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior
             .floating, // Use floating behavior for custom styling
@@ -141,26 +142,55 @@ class Controller {
 
   void onSortIcon(BuildContext context, WidgetRef ref) {
     _showSortBottomSheetDialog(context, ref.watch(genderStateProvider),
+        onFilter: (String gender, String size) {
+      print('$gender $size');
+      ref.watch(genderStateProvider.notifier).update((state) => gender);
+      ref.watch(sizeStateProvider.notifier).update((state) => size);
+    },
         onGenderSelection: (String value) {
       ref.watch(genderStateProvider.notifier).update((state) => value);
-    }, onSizeSelection: (String value) {
+    },
+        onSizeSelection: (String value) {
       ref.watch(sizeStateProvider.notifier).update((state) => value);
     });
   }
 
   void _showSortBottomSheetDialog(BuildContext context, String gender,
-      {required ValueChanged<String> onGenderSelection,
+      {required Function(String, String) onFilter,
+      required ValueChanged<String> onGenderSelection,
       required ValueChanged<String> onSizeSelection}) {
     showModalBottomSheet(
-        context: context,
-        clipBehavior: Clip.hardEdge,
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30.0))),
-        builder: (BuildContext context) => SortModalBottomSheetDialog(
-            gender: gender,
-            onGenderSelection: onGenderSelection,
-            onSizeSelection: onSizeSelection));
+      context: context,
+      clipBehavior: Clip.hardEdge,
+      isScrollControlled: true,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0))),
+      builder: (BuildContext context) => SortModalBottomSheetDialog(
+        // gender: gender,
+        onFilter: onFilter,
+        onGenderSelection: onGenderSelection,
+        onSizeSelection: onSizeSelection
+      )
+    );
+  }
+
+  void onLogin(BuildContext context) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => NavigationPage(),
+      ),
+      (route) => false
+    );
+  }
+
+  void onLogOut(BuildContext context) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ),
+      (route) => false
+    );
   }
 }
 
