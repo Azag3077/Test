@@ -12,7 +12,6 @@ class CartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favorites = ref.watch(cartsStateProvider).reversed;
-    // final favorites = [];
 
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +23,8 @@ class CartPage extends ConsumerWidget {
           style: TextStyle(
             color: Colors.blueGrey,
             fontWeight: FontWeight.bold,
-            fontSize: 28,
+            fontSize: 22,
+            letterSpacing: 1.2
           ),
         ),
         centerTitle: true,

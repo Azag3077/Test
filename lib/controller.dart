@@ -2,6 +2,7 @@ import 'package:ecommerce/pages/description_page.dart';
 import 'package:ecommerce/pages/login_page.dart';
 import 'package:ecommerce/pages/models.dart';
 import 'package:ecommerce/pages/nav_page.dart';
+import 'package:ecommerce/pages/register_page.dart';
 import 'package:ecommerce/pages/see_all_page.dart';
 import 'package:ecommerce/providers.dart';
 import 'package:ecommerce/widgets/dialogs.dart';
@@ -176,6 +177,7 @@ class Controller {
   }
 
   void onLogin(BuildContext context) {
+    print('Azag got ');
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => NavigationPage(),
@@ -187,11 +189,25 @@ class Controller {
   void onLogOut(BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => LoginPage(),
+        builder: (context) => const LoginPage(),
       ),
       (route) => false
     );
   }
+
+  void onRegisterNow(BuildContext context) {
+    print('Azag got here');
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const RegisterPage())
+    );
+  }
+
+  void onLoginNow(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
+  void onSignUp(BuildContext context) {}
 }
 
 final controller = Controller();

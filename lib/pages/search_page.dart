@@ -19,7 +19,13 @@ class SearchPage extends ConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          titleTextStyle: Theme.of(context).textTheme.titleLarge,
+          centerTitle: true,
+          titleTextStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+            color: Colors.blueGrey,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            letterSpacing: 1.2
+          ),
           backgroundColor: Colors.transparent,
           title: const Text('Discovery'),
           systemOverlayStyle: const SystemUiOverlayStyle(

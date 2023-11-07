@@ -1,4 +1,5 @@
 import 'package:ecommerce/controller.dart';
+import 'package:ecommerce/widgets/fields.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -37,59 +38,29 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 50),
 
             // email textfield
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Email",
-                  ),
-                ),
-              ),
+
+            const LoginField(
+              hintText: 'Email'
+            ),
+            const LoginField(
+              hintText: 'Password'
             ),
 
-            const SizedBox(height: 10),
-
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Password",
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: 15.0),
 
             ElevatedButton(
                 onPressed: () => controller.onLogin(context),
-                style: ButtonStyle(
-                  minimumSize: const MaterialStatePropertyAll(
-                    Size(double.infinity, 48.0)
-                  ),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    )
-                  )
-                  // backgroundColor:
+              style: ButtonStyle(
+                minimumSize: const MaterialStatePropertyAll(
+                  Size(double.infinity, 42.0)
                 ),
-                child: const Text('Sign In'),
+                shape: MaterialStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  )
+                )
+              ),
+              child: const Text('Sign In'),
             ),
 
             // sign in button
@@ -106,7 +77,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(width: 8.0),
                   GestureDetector(
-                    // onTap: onTap,
+                    onTap: () => controller.onRegisterNow(context),
                     child: const Text(
                       'Register Now',
                       style: TextStyle(

@@ -23,7 +23,8 @@ class FavPage extends ConsumerWidget {
           style: TextStyle(
             color: Colors.blueGrey,
             fontWeight: FontWeight.bold,
-            fontSize: 28,
+            fontSize: 22,
+            letterSpacing: 1.2
           ),
         ),
         centerTitle: true,
