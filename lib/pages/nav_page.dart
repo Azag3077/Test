@@ -3,20 +3,21 @@ import 'package:ecommerce/widgets/buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'cart_page.dart';
 import 'fav_page.dart';
 import 'home_page.dart';
-import 'search_page.dart';
 import 'profile_page.dart';
+import 'search_page.dart';
 
 class NavigationPage extends ConsumerWidget {
-  const NavigationPage({Key? key}) : super(key: key);
+  NavigationPage({Key? key}) : super(key: key);
 
-  final List<Widget> _screens = const [
-    HomePage(),
-    SearchPage(),
-    FavPage(),
-    CartPage(),
+  final List<Widget> _screens = [
+    const HomePage(),
+    const SearchPage(),
+    const FavPage(),
+    const CartPage(),
     ProfilePage(),
   ];
 
@@ -36,9 +37,8 @@ class NavigationPage extends ConsumerWidget {
         bottomNavigationBar: Card(
           margin: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
           color: const Color.fromRGBO(16, 27, 44, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50.0)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
           child: BottomNavigationBar(
             elevation: 0.0,
             selectedFontSize: 0.0,
@@ -48,7 +48,9 @@ class NavigationPage extends ConsumerWidget {
             type: BottomNavigationBarType.fixed,
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.blueGrey.shade100,
-            onTap: (int index) => ref.read(navIndexStateProvider.notifier).update((state) => index),
+            onTap: (int index) => ref
+                .read(navIndexStateProvider.notifier)
+                .update((state) => index),
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 label: '',
@@ -63,7 +65,8 @@ class NavigationPage extends ConsumerWidget {
               BottomNavigationBarItem(
                 label: '',
                 icon: Icon(CupertinoIcons.heart_circle),
-                activeIcon: NavButton(icon: Icon(CupertinoIcons.heart_circle_fill)),
+                activeIcon:
+                    NavButton(icon: Icon(CupertinoIcons.heart_circle_fill)),
               ),
               BottomNavigationBarItem(
                 label: '',
