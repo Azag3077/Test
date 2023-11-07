@@ -10,9 +10,8 @@ class EcommerceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Ecommerce App',
-      home: NavigationPage(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Ecommerce App',
+        home: NavigationPage());
   }
 }
