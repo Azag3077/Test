@@ -1,4 +1,4 @@
-import 'package:ecommerce/pages/nav_page.dart';
+import 'package:ecommerce/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,6 +12,6 @@ class EcommerceApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Ecommerce App',
-        home: NavigationPage());
+        home: LoginPage(onTap: () {}));
   }
 }
