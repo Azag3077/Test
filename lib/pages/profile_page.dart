@@ -1,3 +1,4 @@
+import 'package:ecommerce/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(home: ProfilePage()));
@@ -30,9 +31,14 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
-                // Implement logout logic here
-              },
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(
+                    onTap: () {},
+                  ),
+                ),
+              ),
               child: const Text('Logout'),
             ),
           ],
