@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
               onPressed: () {
                 // Implement logout logic here
               },
-              child: Text('Logout'),
+              child: const Text('Logout'),
             ),
           ],
         ),
